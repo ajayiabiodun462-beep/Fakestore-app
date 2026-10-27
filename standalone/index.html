@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AURA Storefront - Modern E-Commerce Catalog & Interactive Cart</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Micro Announcement Bar -->
+  <div class="announcement-bar">
+    <span>Free express shipping on orders over $75.00</span>
+    <span class="divider">|</span>
+    <span id="api-status-badge">Connecting to FakeStoreAPI...</span>
+  </div>
+
+  <!-- Header Navigation -->
+  <header class="navbar">
+    <div class="navbar-container">
+      <div class="brand">
+        <a href="#catalog" class="brand-logo">AURA<span>STORE</span></a>
+      </div>
+
+      <nav class="nav-links">
+        <button class="nav-link active" data-category="all">All Products</button>
+        <button class="nav-link" data-category="electronics">Electronics</button>
+        <button class="nav-link" data-category="jewelery">Jewelry</button>
+        <button class="nav-link" data-category="men's clothing">Men's Wear</button>
+        <button class="nav-link" data-category="women's clothing">Women's Wear</button>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="cart-btn" class="cart-trigger-btn" aria-label="View Shopping Cart">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span>Cart</span>
+          <span id="cart-badge" class="badge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-container">
+      <div class="hero-tag">Store Inventory Database · Task 4</div>
+      <h1 class="hero-title">Curated Essentials for Modern Living</h1>
+      <p class="hero-description">
+        Explore live products fetched directly from FakeStoreAPI. Features real-time category filtering, price adjustments, a persistent slide-out shopping cart drawer with quantity math, automatic tax and shipping computation, and checkout confirmation.
+      </p>
+      <div class="hero-kpis">
+        <div class="kpi-card">
+          <strong>20 SKUs</strong>
+          <span>Live FakeStoreAPI Catalog</span>
+        </div>
+        <div class="kpi-card">
+          <strong>$75+</strong>
+          <span>Free Express Delivery</span>
+        </div>
+        <div class="kpi-card">
+          <strong>8.5%</strong>
+          <span>Dynamic Sales Tax Math</span>
+        </div>
+        <div class="kpi-card">
+          <strong>100%</strong>
+          <span>Persistent Cart State</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content & Catalog Grid -->
+  <main class="main-content" id="catalog">
+    <!-- Filter and Search Toolbar -->
+    <div class="filter-toolbar">
+      <div class="search-sort-row">
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="search-input" placeholder="Search catalog by title or keywords..." />
+          <button id="clear-search-btn" class="clear-btn hidden">&times;</button>
+        </div>
+
+        <div class="sort-box">
+          <label for="sort-select">Sort by:</label>
+          <select id="sort-select">
+            <option value="default">Featured</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating-desc">Highest Rated</option>
+            <option value="reviews-desc">Most Reviews</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Category Filter Buttons -->
+      <div class="category-buttons-row">
+        <div class="category-buttons" id="category-filter-buttons">
+          <button class="filter-btn active" data-category="all">All Products</button>
+          <button class="filter-btn" data-category="electronics">Electronics</button>
+          <button class="filter-btn" data-category="jewelery">Jewelry</button>
+          <button class="filter-btn" data-category="men's clothing">Men's Clothing</button>
+          <button class="filter-btn" data-category="women's clothing">Women's Clothing</button>
+        </div>
+        <div class="results-count" id="results-count">Loading products...</div>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="product-grid" id="product-grid">
+      <!-- Injected dynamically via app.js -->
+    </div>
+  </main>
+
+  <!-- Slide-out Cart Drawer -->
+  <div id="cart-drawer-overlay" class="drawer-overlay hidden">
+    <aside class="cart-drawer">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <h2>Shopping Bag</h2>
+        </div>
+        <button id="close-cart-btn" class="close-btn" aria-label="Close cart">&times;</button>
+      </div>
+
+      <!-- Free Shipping Meter -->
+      <div class="shipping-meter-container">
+        <div class="meter-text" id="shipping-meter-text">Add $75.00 for free express delivery</div>
+        <div class="meter-bar">
+          <div id="shipping-meter-fill" class="meter-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Cart Line Items -->
+      <div class="cart-items" id="cart-items-container">
+        <!-- Rendered via JavaScript -->
+      </div>
+
+      <!-- Calculations & Order Summary -->
+      <div class="drawer-footer">
+        <!-- Promo Coupon Form -->
+        <div class="promo-box">
+          <div class="promo-input-group">
+            <input type="text" id="coupon-input" placeholder="Coupon (e.g. SAVE10)" />
+            <button id="apply-coupon-btn" type="button">Apply</button>
+          </div>
+          <div id="coupon-message" class="coupon-msg"></div>
+        </div>
+
+        <div class="summary-line">
+          <span>Subtotal</span>
+          <span id="summary-subtotal">$0.00</span>
+        </div>
+        <div class="summary-line discount-line hidden" id="discount-row">
+          <span>Promo Discount</span>
+          <span id="summary-discount">-$0.00</span>
+        </div>
+        <div class="summary-line">
+          <span>Sales Tax (8.5%)</span>
+          <span id="summary-tax">$0.00</span>
+        </div>
+        <div class="summary-line">
+          <span>Shipping</span>
+          <span id="summary-shipping">$0.00</span>
+        </div>
+        <div class="summary-line total-line">
+          <strong>Total</strong>
+          <strong id="summary-total">$0.00</strong>
+        </div>
+
+        <button id="checkout-btn" class="checkout-btn" type="button">
+          Proceed to Checkout
+        </button>
+        <button id="clear-cart-btn" class="clear-cart-link" type="button">Clear Bag</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Simulated Checkout Modal -->
+  <div id="checkout-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Simulated Checkout</h3>
+        <button id="close-checkout-btn" class="close-btn">&times;</button>
+      </div>
+      <form id="checkout-form" class="checkout-form">
+        <div class="form-section">
+          <h4>Customer &amp; Shipping Details</h4>
+          <div class="form-row">
+            <input type="text" id="cust-name" required placeholder="Full Name" value="Alex Morgan" />
+            <input type="email" id="cust-email" required placeholder="Email Address" value="alex@example.com" />
+          </div>
+          <div class="form-row">
+            <input type="text" id="cust-address" required placeholder="Street Address" value="742 Evergreen Terrace" />
+            <input type="text" id="cust-city" required placeholder="City" value="San Francisco" />
+          </div>
+          <div class="form-row">
+            <input type="text" id="cust-zip" required placeholder="Postal Code" value="94107" />
+            <select id="cust-country">
+              <option value="United States">United States</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="Canada">Canada</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h4>Simulated Payment Method</h4>
+          <div class="payment-radios">
+            <label><input type="radio" name="payment" value="Credit Card" checked /> Credit Card (•••• 4242)</label>
+            <label><input type="radio" name="payment" value="Digital Wallet" /> Digital Wallet (Apple/Google Pay)</label>
+            <label><input type="radio" name="payment" value="Cash On Delivery" /> Cash on Delivery (COD)</label>
+          </div>
+        </div>
+
+        <div class="checkout-summary-box">
+          <div class="summary-total-badge">
+            <span>Total Payable:</span>
+            <strong id="checkout-modal-total">$0.00</strong>
+          </div>
+        </div>
+
+        <button type="submit" id="place-order-btn" class="checkout-btn">
+          Confirm Simulated Order
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Order Confirmation Modal -->
+  <div id="order-confirm-modal" class="modal-overlay hidden">
+    <div class="modal-card confirmation-card">
+      <div class="confirm-icon">✓</div>
+      <h2>Order Confirmed!</h2>
+      <p class="order-ref">Order Reference: <strong id="confirm-order-id">#AURA-000000</strong></p>
+      <p id="confirm-msg" class="confirm-msg">Thank you! Your simulated order has been registered.</p>
+      
+      <div class="confirm-details" id="confirm-details-box">
+        <!-- Rendered by JS -->
+      </div>
+
+      <button id="close-confirm-btn" class="checkout-btn">Continue Shopping</button>
+    </div>
+  </div>
+
+  <!-- Toast Notification element -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Pure Vanilla JavaScript Script -->
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "name": "AURA E-Commerce Storefront & Cart",
+  "description": "Modern e-commerce product catalog with live FakeStoreAPI inventory, responsive grid, category filtering, persistent slide-out shopping cart drawer, tax/shipping math, and simulated checkout.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
